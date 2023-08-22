@@ -1,9 +1,9 @@
 import json
-
-import requests  # pip install requests
+import boto3
 import streamlit as st  # pip install streamlit
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
-
+from PIL import Image
+import io
 
 def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
@@ -12,6 +12,18 @@ lottie_coding = load_lottiefile("stuff/upload.json")
 
 
 st.set_page_config(page_title="Segmentation pipeline", layout="wide")
+
+
+AWS_REGION = st.secrets["AWS_REGION"]
+AWS_ACCESS_KEY_ID = st.secrets["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = st.secrets["AWS_SECRET_ACCESS_KEY"]
+
+client = boto3.client(
+    'sagemaker-runtime', 
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
+)
 
 
 with st.container():
@@ -81,13 +93,24 @@ with st.container():
             #     # Perform the browsing action here
             #     browse_action()
 
-        uploaded_file = st.file_uploader("", type=["png"])
+        uploaded_file = st.file_uploader("", type=["png", 'jpg'])
 
         if uploaded_file is not None:
-            # Process the uploaded file
-            file_contents = uploaded_file.read()
-            st.write("File contents:")
-            st.write(file_contents)
+            bytes_data = uploaded_file.getvalue()
+
+            response = client.invoke_endpoint(
+                EndpointName='zaka',
+                Body=bytes_data,
+                ContentType='image/jpeg',
+                Accept='*/*'
+            )
+
+            image = Image.open(io.BytesIO(response['Body'].read()))
+
+            st.image(bytes_data, caption="Original Image", use_column_width=True)
+            st.image(image, caption="Processed Image", use_column_width=True)
+
+
 
 with st.container():
     st.write("---")
