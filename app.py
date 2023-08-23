@@ -1,5 +1,5 @@
 import json
-import boto3
+# import boto3
 import streamlit as st  # pip install streamlit
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
 from PIL import Image
@@ -15,16 +15,16 @@ lottie_coding = load_lottiefile("stuff/upload.json")
 st.set_page_config(page_title="Segmentation pipeline", layout="wide")
 
 
-AWS_REGION = st.secrets["AWS_REGION"]
-AWS_ACCESS_KEY_ID = st.secrets["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = st.secrets["AWS_SECRET_ACCESS_KEY"]
+# AWS_REGION = st.secrets["AWS_REGION"]
+# AWS_ACCESS_KEY_ID = st.secrets["AWS_ACCESS_KEY_ID"]
+# AWS_SECRET_ACCESS_KEY = st.secrets["AWS_SECRET_ACCESS_KEY"]
 
-client = boto3.client(
-    'sagemaker-runtime', 
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION
-)
+# client = boto3.client(
+#     'sagemaker-runtime', 
+#     aws_access_key_id=AWS_ACCESS_KEY_ID,
+#     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+#     region_name=AWS_REGION
+# )
 
 
 with st.container():
