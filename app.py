@@ -4,6 +4,7 @@ import streamlit as st  # pip install streamlit
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
 from PIL import Image
 import io
+import requests
 
 def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
@@ -98,14 +99,11 @@ with st.container():
         if uploaded_file is not None:
             bytes_data = uploaded_file.getvalue()
 
-            response = client.invoke_endpoint(
-                EndpointName='zaka',
-                Body=bytes_data,
-                ContentType='image/jpeg',
-                Accept='*/*'
-            )
+            files = {'file': ('filename.jpeg', bytes_data)}
+            response = requests.post("https://1974-78-110-74-199.ngrok-free.app", files=files)
 
-            image = Image.open(io.BytesIO(response['Body'].read()))
+
+            image = Image.open(io.BytesIO(response.content))
 
             st.image(bytes_data, caption="Original Image", use_column_width=True)
             st.image(image, caption="Processed Image", use_column_width=True)

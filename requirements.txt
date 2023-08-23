@@ -1,2 +1,2 @@
 streamlit-lottie
-boto3
+requests
