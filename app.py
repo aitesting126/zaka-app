@@ -100,7 +100,7 @@ with st.container():
             bytes_data = uploaded_file.getvalue()
 
             files = {'file': ('filename.jpeg', bytes_data)}
-            response = requests.post("https://f50a-78-110-74-199.ngrok-free.app", files=files)
+            response = requests.post("https://a9f7-78-110-74-199.ngrok-free.app", files=files)
 
 
             image = Image.open(io.BytesIO(response.content))
